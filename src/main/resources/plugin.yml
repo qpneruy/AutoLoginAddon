@@ -1,0 +1,13 @@
+name: AutoLoginAddon
+version: '1.0-SNAPSHOT'
+main: org.qpneruy.autoLoginAddon.AutoLoginAddon
+api-version: '1.20'
+authors: [ qpneruy ]
+description: tên nói lên tất cả, Bản Quyền của TST - TaoSinhTon
+depend: [AuthMe]
+
+commands:
+  autoLogin:
+    description: "yep, autoLogin"
+    aliases: [autoLogin, aln]
+    permission: autoLogin.AutoLogin
