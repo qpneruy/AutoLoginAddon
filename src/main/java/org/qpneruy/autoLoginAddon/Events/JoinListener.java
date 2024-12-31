@@ -18,12 +18,12 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         UUID playerUuid = player.getUniqueId();
         String ipAddress = Objects.requireNonNull(player.getAddress()).getHostString();
-
         authRepo.registerPlayer(playerUuid);
 
         if (authRepo.isIpRegisteredForPlayer(playerUuid, ipAddress)) {
             AuthMeApi.getInstance().forceLogin(player);
-        } else authRepo.registerPlayerIp(playerUuid, ipAddress);
+            player.sendMessage("§6[AutoLogin]: §aTự động Đăng nhập");
+        }
         authRepo.updateLastLogin(playerUuid);
     }
 }

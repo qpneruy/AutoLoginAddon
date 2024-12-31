@@ -33,7 +33,8 @@ public class DatabaseManager {
     }
 
     private static @NotNull HikariConfig getHikariConfig() {
-        String dbPath = instance.getDataFolder() + DB_NAME;
+        String dbPath = instance.getDataFolder().getAbsolutePath() + "\\" + DB_NAME;
+        //String dbPath = "D:\\Project\\Java\\AutoLoginAddon\\src\\main\\java\\org\\qpneruy\\autoLoginAddon\\dbTest\\Database";
         String dbUrl = "jdbc:h2:" + dbPath + ";AUTO_SERVER=TRUE";
 
         HikariConfig config = new HikariConfig();

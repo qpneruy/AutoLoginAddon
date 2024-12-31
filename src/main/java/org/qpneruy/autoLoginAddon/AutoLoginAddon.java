@@ -43,5 +43,6 @@ public final class AutoLoginAddon extends JavaPlugin {
             getLogger().info("AuthMe not found! Disabling plugin");
             this.getServer().getPluginManager().disablePlugin(this);
         }
+
     }
 }

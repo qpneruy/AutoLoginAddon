@@ -30,14 +30,15 @@ public class PlayerAuthRepository {
     private final DataSource dataSource;
     private final PlayerCache playerCache;
 
-    @Getter private static final PlayerAuthRepository INSTANCE = new PlayerAuthRepository();
+    @Getter
+    private static final PlayerAuthRepository INSTANCE = new PlayerAuthRepository();
 
     public PlayerAuthRepository() {
         this.dataSource = DatabaseManager.getDataSource();
         this.playerCache = PlayerCache.getINSTANCE();
         initializeTables();
     }
-    
+
     private void initializeTables() {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
@@ -51,12 +52,12 @@ public class PlayerAuthRepository {
         String uuid = playerUUID.toString();
         if (playerCache.isPlayerKnown(uuid)) return;
 
-
         String sql = "MERGE INTO players (uuid, last_login) KEY(uuid) VALUES (?, CURRENT_TIMESTAMP)";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid);
             playerCache.cachePlayer(uuid);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             log.error("Failed to register player: {}", uuid, e);
         }
@@ -74,9 +75,7 @@ public class PlayerAuthRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid);
             stmt.setString(2, ipAddress);
-            int rowsAffected = stmt.executeUpdate();
-            System.out.println("IP Registered (Rows affected: " + rowsAffected + ")");
-
+            stmt.executeUpdate();
             playerCache.cachePlayerIp(uuid, ipAddress);
         } catch (SQLException e) {
             log.error("Failed to register IP for player: {} - {}", uuid, ipAddress, e);
